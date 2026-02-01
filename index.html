@@ -122,6 +122,37 @@
             color: white;
         }
 
+        .courier-logo.unknown {
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+            color: #999;
+            font-size: 1.5rem;
+        }
+
+        .track-btn.disabled {
+            background: linear-gradient(135deg, #444 0%, #333 100%);
+            color: #666;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .checkbox-container.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .checkbox-container.disabled .checkmark {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .delivery-card.pending {
+            opacity: 0.7;
+        }
+
+        .tracking-number.pending {
+            font-style: italic;
+            color: #555;
+        }
+
         .card-info {
             flex: 1;
         }
@@ -348,6 +379,39 @@
                     </a>
                     <label class="checkbox-container">
                         <input type="checkbox" id="check-3" onchange="saveCheck(3)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery 4 -->
+            <div class="delivery-card pending" id="card-4">
+                <div class="card-top">
+                    <div class="courier-logo unknown">?</div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <span class="delivery-name">Delivery 4</span>
+                            <span class="courier-badge">Unknown</span>
+                        </div>
+                        <div class="tracking-number pending">Tracking still not received</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <span class="track-btn disabled">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </span>
+                    <label class="checkbox-container disabled">
+                        <input type="checkbox" id="check-4" disabled>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
