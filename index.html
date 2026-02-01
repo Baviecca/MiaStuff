@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mia's Deliveries</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 24px 16px;
+            color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff8a80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .disclaimer {
+            background: rgba(255, 107, 157, 0.08);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .disclaimer-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .disclaimer-text {
+            color: #aaa;
+        }
+
+        .deliveries {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .delivery-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .delivery-card.checked {
+            background: rgba(255, 107, 157, 0.05);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .delivery-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+
+        .courier-badge {
+            background: rgba(255, 107, 157, 0.15);
+            color: #ff6b9d;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tracking-number {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .track-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .track-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255, 107, 157, 0.4);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container input:checked + .checkmark {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            border-color: #ff6b9d;
+        }
+
+        .checkmark svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container input:checked + .checkmark svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checkbox-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .delivery-card.checked .checkbox-label {
+            color: #ff6b9d;
+        }
+
+        .delivery-card.checked .delivery-name {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .courier-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .courier-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-top {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mia's Deliveries</h1>
+            <p class="subtitle">Track your parcels</p>
+        </header>
+
+        <div class="disclaimer">
+            <div class="disclaimer-header">
+                <span>⚠️</span>
+                <span>Notice</span>
+            </div>
+            <p class="disclaimer-text">
+                This tool is exclusively for use by Mia (the biatch). For parcel tracking purposes only. Any unauthorized access by users other than the Biatch herself will be met with a firm slapping.
+            </p>
+        </div>
+
+        <div class="deliveries">
+            <!-- Delivery 1 -->
+            <div class="delivery-card" id="card-1">
+                <div class="card-top">
+                    <div class="courier-logo">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb8AAAG/CAMAAAD/zSlAAAAA5FBMVEX////gHjTyZSLgHjLyYx///fzgKTfyZyTiK0D97ufzdj784db/+vj95Nn3nnP818T4r4z3onjhJDrhNzz0gUv1lWjzcDDiQUHyXxX96OD3p4X70Lr+9PXsho7rdYL2nXfzrbTna13kV07odGTqg3HmX1TjSkb63uH0vK341s/fESvulIH2yLrwpZTwm6TnSl3nVGTyrp7ypK386uzjNkrvnYv3x831u8L40NTpYHD5uJr1jV3qannvkJvxXgDtf4z5wabfACDlTFTmWVnslY7qe3XoaGfxopvri4Pyr6n0vrriQDfvazpgAAAgAElEQVR4nO2dCUPiytL3iU0wgSgYNoHA4AYSkSBEwvqAzjjHmfv9v8/bnaTT3SFhcz3nrd+5d0SEJvQ/VV3VayIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Pos Laju">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <span class="delivery-name">Delivery 1</span>
+                            <span class="courier-badge">Pos Laju</span>
+                        </div>
+                        <div class="tracking-number">PL756396578344</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://tracking.pos.com.my/tracking/PL756396578344" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-1" onchange="saveCheck(1)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery 2 -->
+            <div class="delivery-card" id="card-2">
+                <div class="card-top">
+                    <div class="courier-logo">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb8AAAG/CAMAAAD/zSlAAAAA5FBMVEX////gHjTyZSLgHjLyYx///fzgKTfyZyTiK0D97ufzdj784db/+vj95Nn3nnP818T4r4z3onjhJDrhNzz0gUv1lWjzcDDiQUHyXxX96OD3p4X70Lr+9PXsho7rdYL2nXfzrbTna13kV07odGTqg3HmX1TjSkb63uH0vK341s/fESvulIH2yLrwpZTwm6TnSl3nVGTyrp7ypK386uzjNkrvnYv3x831u8L40NTpYHD5uJr1jV3qannvkJvxXgDtf4z5wabfACDlTFTmWVnslY7qe3XoaGfxopvri4Pyr6n0vrriQDfvazpgAAAgAElEQVR4nO2dCUPiytL3iU0wgSgYNoHA4AYSkSBEwvqAzjjHmfv9v8/bnaTT3SFhcz3nrd+5d0SEJvQ/VV3VayIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Pos Laju">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <span class="delivery-name">Delivery 2</span>
+                            <span class="courier-badge">Pos Laju</span>
+                        </div>
+                        <div class="tracking-number">PL601892078304</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://tracking.pos.com.my/tracking/PL601892078304" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-2" onchange="saveCheck(2)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery 3 -->
+            <div class="delivery-card" id="card-3">
+                <div class="card-top">
+                    <div class="courier-logo">
+                        <img src="data:image/png;base64,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" alt="Pos Laju">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <span class="delivery-name">Delivery 3</span>
+                            <span class="courier-badge">SPX Express</span>
+                        </div>
+                        <div class="tracking-number">MY261064443030R</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://spx.com.my/m/track?MY261064443030R" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-3" onchange="saveCheck(3)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved checkbox states on page load
+        function loadChecks() {
+            for (let i = 1; i <= 10; i++) {
+                const checkbox = document.getElementById(`check-${i}`);
+                const card = document.getElementById(`card-${i}`);
+                if (checkbox && card) {
+                    const saved = localStorage.getItem(`mia-delivery-${i}`);
+                    if (saved === 'true') {
+                        checkbox.checked = true;
+                        card.classList.add('checked');
+                    }
+                }
+            }
+        }
+
+        // Save checkbox state
+        function saveCheck(id) {
+            const checkbox = document.getElementById(`check-${id}`);
+            const card = document.getElementById(`card-${id}`);
+            localStorage.setItem(`mia-delivery-${id}`, checkbox.checked);
+            
+            if (checkbox.checked) {
+                card.classList.add('checked');
+            } else {
+                card.classList.remove('checked');
+            }
+        }
+
+        // Initialize on page load
+        loadChecks();
+    </script>
+</body>
+</html>
