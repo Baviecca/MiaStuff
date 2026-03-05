@@ -127,6 +127,11 @@
             color: white;
         }
 
+        .courier-logo.nvan {
+            background: linear-gradient(135deg, #d71a28 0%, #b71520 100%);
+            color: white;
+        }
+
         .courier-logo.unknown {
             background: linear-gradient(135deg, #555 0%, #333 100%);
             color: #999;
@@ -417,7 +422,7 @@
                     <div class="courier-logo poslaju">POS<br>LAJU</div>
                     <div class="card-info">
                         <div class="card-header">
-                            <div class="delivery-title"><span class="delivery-name">Delivery 4</span><span class="new-badge">New</span></div>
+                            <span class="delivery-name">Delivery 4</span>
                             <span class="courier-badge">Pos Laju</span>
                         </div>
                         <div class="tracking-number">ENE140176621MY</div>
@@ -450,7 +455,7 @@
                     <div class="courier-logo gdex">GDEX</div>
                     <div class="card-info">
                         <div class="card-header">
-                            <div class="delivery-title"><span class="delivery-name">Delivery 5</span><span class="new-badge">New</span></div>
+                            <span class="delivery-name">Delivery 5</span>
                             <span class="courier-badge">GDEX</span>
                         </div>
                         <div class="tracking-number">GDSP00001743111</div>
@@ -467,6 +472,39 @@
                     </a>
                     <label class="checkbox-container">
                         <input type="checkbox" id="check-5" onchange="saveCheck(5)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery 6 -->
+            <div class="delivery-card" id="card-6">
+                <div class="card-top">
+                    <div class="courier-logo nvan">NINJA<br>VAN</div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <div class="delivery-title"><span class="delivery-name">Delivery 6</span><span class="new-badge">New</span></div>
+                            <span class="courier-badge">Ninja Van</span>
+                        </div>
+                        <div class="tracking-number">NVMYHJSBG000017705</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://www.ninjavan.co/en-my/tracking?id=NVMYHJSBG000017705" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-6" onchange="saveCheck(6)">
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -508,8 +546,4 @@
             }
         }
 
-        // Initialize on page load
-        loadChecks();
-    </script>
-</body>
-</html>
+        // 
