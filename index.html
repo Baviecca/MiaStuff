@@ -584,5 +584,67 @@
 
         loadChecks();
     </script>
+
+    <style>
+        .bee {
+            position: fixed;
+            font-size: 1.4rem;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: left, top, transform;
+        }
+    </style>
+
+    <script>
+        const bees = [];
+        for (let i = 0; i < 10; i++) {
+            const el = document.createElement('div');
+            el.className = 'bee';
+            el.textContent = '🐝';
+            document.body.appendChild(el);
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.8 + Math.random() * 1.2;
+            bees.push({
+                el,
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                wobble: Math.random() * Math.PI * 2,
+                turnTimer: 0,
+                turnAt: 50 + Math.floor(Math.random() * 100),
+            });
+        }
+
+        function tick() {
+            const W = window.innerWidth;
+            const H = document.documentElement.scrollHeight;
+            for (const b of bees) {
+                b.wobble += 0.08;
+                b.turnTimer++;
+                if (b.turnTimer >= b.turnAt) {
+                    const targetAngle = Math.random() * Math.PI * 2;
+                    const speed = 0.8 + Math.random() * 1.2;
+                    b.vx += (Math.cos(targetAngle) * speed - b.vx) * 0.3;
+                    b.vy += (Math.sin(targetAngle) * speed - b.vy) * 0.3;
+                    b.turnTimer = 0;
+                    b.turnAt = 50 + Math.floor(Math.random() * 100);
+                }
+                if (b.x < 20)      b.vx = Math.abs(b.vx);
+                if (b.x > W - 30)  b.vx = -Math.abs(b.vx);
+                if (b.y < 20)      b.vy = Math.abs(b.vy);
+                if (b.y > H - 30)  b.vy = -Math.abs(b.vy);
+
+                b.x += b.vx;
+                b.y += b.vy + Math.sin(b.wobble) * 0.8;
+
+                b.el.style.left = b.x + 'px';
+                b.el.style.top  = b.y + 'px';
+                b.el.style.transform = b.vx < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+            }
+            requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    </script>
 </body>
 </html>
