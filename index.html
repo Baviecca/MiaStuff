@@ -339,7 +339,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-1" onchange="saveCheck(1)">
+                        <input type="checkbox" id="check-1" onchange="saveCheck(1)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -372,7 +372,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-2" onchange="saveCheck(2)">
+                        <input type="checkbox" id="check-2" onchange="saveCheck(2)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -405,7 +405,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-3" onchange="saveCheck(3)">
+                        <input type="checkbox" id="check-3" onchange="saveCheck(3)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -438,7 +438,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-4" onchange="saveCheck(4)">
+                        <input type="checkbox" id="check-4" onchange="saveCheck(4)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -471,7 +471,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-5" onchange="saveCheck(5)">
+                        <input type="checkbox" id="check-5" onchange="saveCheck(5)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -504,7 +504,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-6" onchange="saveCheck(6)">
+                        <input type="checkbox" id="check-6" onchange="saveCheck(6)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -536,7 +536,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-6" onchange="saveCheck(6)">
+                        <input type="checkbox" id="check-7" onchange="saveCheck(7)">
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -557,7 +557,12 @@
                 const card = document.getElementById(`card-${i}`);
                 if (checkbox && card) {
                     const saved = localStorage.getItem(`mia-delivery-${i}`);
-                    if (saved === 'true') {
+                    if (saved === 'false') {
+                        // User explicitly unchecked before — respect that
+                        checkbox.checked = false;
+                        card.classList.remove('checked');
+                    } else if (saved === 'true' || checkbox.checked) {
+                        // Saved as true OR defaulted to checked in HTML
                         checkbox.checked = true;
                         card.classList.add('checked');
                     }
@@ -570,7 +575,6 @@
             const checkbox = document.getElementById(`check-${id}`);
             const card = document.getElementById(`card-${id}`);
             localStorage.setItem(`mia-delivery-${id}`, checkbox.checked);
-            
             if (checkbox.checked) {
                 card.classList.add('checked');
             } else {
@@ -578,4 +582,7 @@
             }
         }
 
-        // 
+        loadChecks();
+    </script>
+</body>
+</html>
