@@ -596,44 +596,51 @@
     </style>
 
     <script>
-        const bees = [];
-        for (let i = 0; i < 5; i++) {
-            const el = document.createElement('div');
-            el.className = 'bee';
-            el.textContent = '🐝';
-            document.body.appendChild(el);
-            const angle = Math.random() * Math.PI * 2;
-            const speed = 0.8 + Math.random() * 1.2;
-            bees.push({
-                el,
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                wobble: Math.random() * Math.PI * 2,
-                turnTimer: 0,
-                turnAt: 50 + Math.floor(Math.random() * 100),
-            });
+        function makeFloaters(emoji, count, speedMin, speedMax) {
+            const items = [];
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.style.cssText = 'position:fixed;font-size:1.4rem;pointer-events:none;z-index:9999;will-change:left,top,transform;';
+                el.textContent = emoji;
+                document.body.appendChild(el);
+                const angle = Math.random() * Math.PI * 2;
+                const speed = speedMin + Math.random() * (speedMax - speedMin);
+                items.push({
+                    el,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    wobble: Math.random() * Math.PI * 2,
+                    turnTimer: 0,
+                    turnAt: 50 + Math.floor(Math.random() * 100),
+                });
+            }
+            return items;
         }
+
+        const bees    = makeFloaters('🐝', 4, 0.8, 1.5);
+        const cherries = makeFloaters('🍒', 4, 0.3, 0.7);
+        const all = [...bees, ...cherries];
 
         function tick() {
             const W = window.innerWidth;
             const H = document.documentElement.scrollHeight;
-            for (const b of bees) {
+            for (const b of all) {
                 b.wobble += 0.08;
                 b.turnTimer++;
                 if (b.turnTimer >= b.turnAt) {
                     const targetAngle = Math.random() * Math.PI * 2;
-                    const speed = 0.8 + Math.random() * 1.2;
+                    const speed = b.el.textContent === '🐝' ? 0.8 + Math.random() * 0.7 : 0.3 + Math.random() * 0.4;
                     b.vx += (Math.cos(targetAngle) * speed - b.vx) * 0.3;
                     b.vy += (Math.sin(targetAngle) * speed - b.vy) * 0.3;
                     b.turnTimer = 0;
                     b.turnAt = 50 + Math.floor(Math.random() * 100);
                 }
-                if (b.x < 20)      b.vx = Math.abs(b.vx);
-                if (b.x > W - 30)  b.vx = -Math.abs(b.vx);
-                if (b.y < 20)      b.vy = Math.abs(b.vy);
-                if (b.y > H - 30)  b.vy = -Math.abs(b.vy);
+                if (b.x < 20)     b.vx = Math.abs(b.vx);
+                if (b.x > W - 30) b.vx = -Math.abs(b.vx);
+                if (b.y < 20)     b.vy = Math.abs(b.vy);
+                if (b.y > H - 30) b.vy = -Math.abs(b.vy);
 
                 b.x += b.vx;
                 b.y += b.vy + Math.sin(b.wobble) * 0.8;
