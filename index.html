@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mia's Deliveries</title>
+    <title>Mia's Deliveries 🌙</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+            background: linear-gradient(135deg, #0a1f0f 0%, #0f2d1a 50%, #0a1f0f 100%);
             min-height: 100vh;
             padding: 24px 16px;
             color: #f0f0f0;
@@ -32,7 +32,7 @@
         h1 {
             font-size: 2rem;
             font-weight: 600;
-            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff8a80 100%);
+            background: linear-gradient(135deg, #f0c040 0%, #c8860a 50%, #f5d76e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -41,7 +41,7 @@
 
         .subtitle {
             font-size: 0.9rem;
-            color: #888;
+            color: #6b8c6b;
         }
 
 
@@ -61,15 +61,23 @@
         }
         .happy-bees-row .checkbox-label {
             font-size: 0.82rem;
-            color: #aaa;
+            color: #6b8c6b;
         }
         .happy-bees-row .checkmark {
             width: 20px;
             height: 20px;
         }
+
+        .raya-banner {
+            text-align: center;
+            font-size: 1.4rem;
+            letter-spacing: 0.4rem;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
         .disclaimer {
-            background: rgba(255, 107, 157, 0.08);
-            border: 1px solid rgba(255, 107, 157, 0.2);
+            background: rgba(200, 160, 20, 0.08);
+            border: 1px solid rgba(200, 160, 20, 0.25);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 24px;
@@ -82,12 +90,12 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
-            color: #ff6b9d;
+            color: #d4a017;
             font-weight: 600;
         }
 
         .disclaimer-text {
-            color: #aaa;
+            color: #6b8c6b;
         }
 
         .deliveries {
@@ -106,7 +114,7 @@
 
         .delivery-card:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 107, 157, 0.3);
+            border-color: rgba(200, 160, 20, 0.35);
         }
 
 
@@ -150,14 +158,14 @@
             left: 0;
             height: 100%;
             width: 0%;
-            background: rgba(176, 101, 196, 0.15);
+            background: rgba(200, 160, 20, 0.12);
             border-radius: 16px;
             pointer-events: none;
             z-index: 0;
         }
         .delivery-card.checked {
-            background: rgba(255, 107, 157, 0.05);
-            border-color: rgba(255, 107, 157, 0.3);
+            background: rgba(200, 160, 20, 0.05);
+            border-color: rgba(200, 160, 20, 0.35);
         }
 
         .card-top {
@@ -267,8 +275,8 @@
         }
 
         .courier-badge {
-            background: rgba(255, 107, 157, 0.15);
-            color: #ff6b9d;
+            background: rgba(200, 160, 20, 0.15);
+            color: #d4a017;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -289,7 +297,7 @@
         }
 
         .track-btn {
-            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            background: linear-gradient(135deg, #2e7d4f 0%, #1b5e35 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -306,7 +314,7 @@
 
         .track-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+            box-shadow: 0 4px 12px rgba(46, 125, 79, 0.4);
         }
 
         .checkbox-container {
@@ -333,8 +341,8 @@
         }
 
         .checkbox-container input:checked + .checkmark {
-            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
-            border-color: #ff6b9d;
+            background: linear-gradient(135deg, #2e7d4f 0%, #1b5e35 100%);
+            border-color: #2e7d4f;
         }
 
         .checkmark svg {
@@ -355,11 +363,11 @@
 
         .checkbox-label {
             font-size: 0.85rem;
-            color: #888;
+            color: #6b8c6b;
         }
 
         .delivery-card.checked .checkbox-label {
-            color: #ff6b9d;
+            color: #d4a017;
         }
 
         .delivery-card.checked .delivery-name {
@@ -371,10 +379,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>Mia's Deliveries</h1>
-            <p class="subtitle">Track your parcels</p>
+            <h1>🌙 Mia's Deliveries</h1>
+            <p class="subtitle">Selamat Hari Raya ✨ Track your parcels</p>
         </header>
 
+        <div class="raya-banner">🪔 ✨ 🌙 ✨ 🪔</div>
         <div class="disclaimer">
             <div class="disclaimer-header">
                 <span>⚠️</span>
@@ -925,8 +934,7 @@
         // ── Hold-to-track logic ───────────────────────────────────
         const holdBtn = document.getElementById('hold-track-btn');
         const holdProgress = document.getElementById('hold-progress');
-        const HOLD_DURATION_NORMAL = 5000;
-        const HOLD_DURATION_HAPPY  = 1000;
+        const HOLD_DURATION = 5000;
         let holdStart = null;
         let holdRAF = null;
         let didNavigate = false;
@@ -948,8 +956,7 @@
 
         function animateProgress() {
             const elapsed = performance.now() - holdStart;
-            const duration = happyCheck.checked ? HOLD_DURATION_HAPPY : HOLD_DURATION_NORMAL;
-            const pct = Math.min((elapsed / duration) * 100, 100);
+            const pct = Math.min((elapsed / HOLD_DURATION) * 100, 100);
             holdProgress.style.width = pct + '%';
             if (pct >= 100 && !didNavigate) {
                 didNavigate = true;
