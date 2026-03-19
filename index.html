@@ -719,6 +719,13 @@
     </style>
 
     <script>
+        // ── Global Speed Modifiers ──────────────────────────────
+        // Tune these to match feel across devices. 1.0 = default.
+        const GSModH = 3.0;    // Horizontal speed multiplier
+        const GSModV = 3.0;    // Vertical speed multiplier
+        const AngryMod = 2.0;  // Speed multiplier when bees chase the button
+        // ────────────────────────────────────────────────────────
+
         function makeFloaters(emoji, count, speedMin, speedMax) {
             const items = [];
             for (let i = 0; i < count; i++) {
@@ -748,36 +755,40 @@
 
         let beesDiving = false;
 
-        function tick() {
+        // Delta-time: normalise to 60fps baseline so speed is device-independent
+        const TARGET_MS = 1000 / 60;
+        let lastTime = null;
+
+        function tick(now) {
+            const dt = lastTime ? Math.min((now - lastTime) / TARGET_MS, 3) : 1; // cap at 3x to avoid jumps after tab switch
+            lastTime = now;
+
             const W = window.innerWidth;
             const H = window.innerHeight;
 
             // Get button rect fresh every frame
             const btnElDiv = document.getElementById('hold-track-btn');
             const btnRect = btnElDiv ? btnElDiv.getBoundingClientRect() : null;
-
-            // Use btnRect already fetched above for collision
             const btnR = btnRect;
-            const PADDING = 22; // extra cushion around button edges
+            const PADDING = 22;
 
             // Bees only — steer toward button when diving
             for (const b of bees) {
-                b.wobble += 0.08;
+                b.wobble += 0.08 * dt;
                 if (beesDiving && btnRect) {
-                    // Closest point on button edge to this bee
                     const clampedX = Math.max(btnRect.left, Math.min(btnRect.right,  b.x));
                     const clampedY = Math.max(btnRect.top,  Math.min(btnRect.bottom, b.y));
                     const dx = clampedX - b.x;
                     const dy = clampedY - b.y;
                     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const speed = 1.2;
-                    b.vx += (dx / dist * speed - b.vx) * 0.08;
-                    b.vy += (dy / dist * speed - b.vy) * 0.08;
+                    const speed = 1.2 * AngryMod;
+                    b.vx += (dx / dist * speed - b.vx) * 0.08 * dt;
+                    b.vy += (dy / dist * speed - b.vy) * 0.08 * dt;
                 } else {
-                    b.turnTimer++;
+                    b.turnTimer += dt;
                     if (b.turnTimer >= b.turnAt) {
                         const targetAngle = Math.random() * Math.PI * 2;
-                        const speed = 0.8 + Math.random() * 0.7;
+                        const speed = 1.0 + (Math.random() - 0.5) * 0.6;
                         b.vx += (Math.cos(targetAngle) * speed - b.vx) * 0.3;
                         b.vy += (Math.sin(targetAngle) * speed - b.vy) * 0.3;
                         b.turnTimer = 0;
@@ -788,8 +799,8 @@
                     if (b.y < 20)     b.vy = Math.abs(b.vy);
                     if (b.y > H - 30) b.vy = -Math.abs(b.vy);
                 }
-                b.x += b.vx;
-                b.y += b.vy + Math.sin(b.wobble) * 0.8;
+                b.x += b.vx * dt * GSModH;
+                b.y += b.vy * dt * GSModV + Math.sin(b.wobble) * 0.4 * dt * GSModV;
 
                 // Button collision — only active when holding
                 if (beesDiving && btnR) {
@@ -802,26 +813,22 @@
                     const insideY = b.y > top  && b.y < bottom;
 
                     if (insideX && insideY) {
-                        // Find which edge is closest and push bee out + reverse that velocity
                         const dLeft   = Math.abs(b.x - left);
                         const dRight  = Math.abs(b.x - right);
                         const dTop    = Math.abs(b.y - top);
                         const dBottom = Math.abs(b.y - bottom);
                         const minD = Math.min(dLeft, dRight, dTop, dBottom);
 
-                        const bounceSpeed = 5.5;
-                        // Base angle points away from whichever edge was hit, then randomise ±50deg
+                        const bounceSpeed = 3.0;
                         let baseAngle;
-                        if (minD === dLeft)        { b.x = left   - 20; baseAngle = Math.PI; }       // shoot left
-                        else if (minD === dRight)  { b.x = right  + 20; baseAngle = 0; }             // shoot right
-                        else if (minD === dTop)    { b.y = top    - 20; baseAngle = -Math.PI / 2; }  // shoot up
-                        else                       { b.y = bottom + 20; baseAngle =  Math.PI / 2; }  // shoot down
-                        // Random spread of ±50 degrees so it never feels robotic
+                        if (minD === dLeft)        { b.x = left   - 20; baseAngle = Math.PI; }
+                        else if (minD === dRight)  { b.x = right  + 20; baseAngle = 0; }
+                        else if (minD === dTop)    { b.y = top    - 20; baseAngle = -Math.PI / 2; }
+                        else                       { b.y = bottom + 20; baseAngle =  Math.PI / 2; }
                         const spread = (Math.random() - 0.5) * (Math.PI * 5 / 9);
                         const finalAngle = baseAngle + spread;
                         b.vx = Math.cos(finalAngle) * bounceSpeed;
                         b.vy = Math.sin(finalAngle) * bounceSpeed;
-                        // Penalise progress — set back 0.5 seconds
                         if (holdStart !== null) holdStart += 100;
                     }
                 }
@@ -833,11 +840,11 @@
 
             // Cherries — always normal, never affected
             for (const c of cherries) {
-                c.wobble += 0.08;
-                c.turnTimer++;
+                c.wobble += 0.08 * dt;
+                c.turnTimer += dt;
                 if (c.turnTimer >= c.turnAt) {
                     const targetAngle = Math.random() * Math.PI * 2;
-                    const speed = 0.3 + Math.random() * 0.4;
+                    const speed = 0.5 + (Math.random() - 0.5) * 0.3;
                     c.vx += (Math.cos(targetAngle) * speed - c.vx) * 0.3;
                     c.vy += (Math.sin(targetAngle) * speed - c.vy) * 0.3;
                     c.turnTimer = 0;
@@ -847,8 +854,8 @@
                 if (c.x > W - 30) c.vx = -Math.abs(c.vx);
                 if (c.y < 20)     c.vy = Math.abs(c.vy);
                 if (c.y > H - 30) c.vy = -Math.abs(c.vy);
-                c.x += c.vx;
-                c.y += c.vy + Math.sin(c.wobble) * 0.8;
+                c.x += c.vx * dt * GSModH;
+                c.y += c.vy * dt * GSModV + Math.sin(c.wobble) * 0.4 * dt * GSModV;
                 c.el.style.left = c.x + 'px';
                 c.el.style.top  = c.y + 'px';
                 c.el.style.transform = c.vx < 0 ? 'scaleX(-1)' : 'scaleX(1)';
