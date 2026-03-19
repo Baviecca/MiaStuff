@@ -389,7 +389,7 @@
                     <span class="checkmark">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     </span>
-                    <span class="checkbox-label">🐝 Make Bees Happy (they won't attack while tracking)</span>
+                    <span class="checkbox-label">🐝 Make Bees Happy</span>
                 </label>
             </div>
         </div>
@@ -941,7 +941,7 @@
             didNavigate = false;
             holdStart = performance.now();
             if (!happyCheck.checked) beesDiving = true;
-            startBuzz();
+            if (!happyCheck.checked) startBuzz();
             animateProgress();
         }
 
