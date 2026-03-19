@@ -925,7 +925,8 @@
         // ── Hold-to-track logic ───────────────────────────────────
         const holdBtn = document.getElementById('hold-track-btn');
         const holdProgress = document.getElementById('hold-progress');
-        const HOLD_DURATION = 5000;
+        const HOLD_DURATION_NORMAL = 5000;
+        const HOLD_DURATION_HAPPY  = 1000;
         let holdStart = null;
         let holdRAF = null;
         let didNavigate = false;
@@ -947,7 +948,8 @@
 
         function animateProgress() {
             const elapsed = performance.now() - holdStart;
-            const pct = Math.min((elapsed / HOLD_DURATION) * 100, 100);
+            const duration = happyCheck.checked ? HOLD_DURATION_HAPPY : HOLD_DURATION_NORMAL;
+            const pct = Math.min((elapsed / duration) * 100, 100);
             holdProgress.style.width = pct + '%';
             if (pct >= 100 && !didNavigate) {
                 didNavigate = true;
