@@ -44,6 +44,29 @@
             color: #888;
         }
 
+
+        .happy-bees-row {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 28px; /* always reserve space so layout doesn't jump */
+            visibility: hidden; /* hidden but still takes space */
+        }
+        .happy-bees-row.revealed {
+            visibility: visible;
+        }
+        .happy-bees-row .checkbox-container {
+            gap: 8px;
+        }
+        .happy-bees-row .checkbox-label {
+            font-size: 0.82rem;
+            color: #aaa;
+        }
+        .happy-bees-row .checkmark {
+            width: 20px;
+            height: 20px;
+        }
         .disclaimer {
             background: rgba(255, 107, 157, 0.08);
             border: 1px solid rgba(255, 107, 157, 0.2);
@@ -360,6 +383,15 @@
             <p class="disclaimer-text">
                 This tool is exclusively for use by Mia (the biatch). For parcel tracking purposes only. Any unauthorized access by users other than the Biatch herself will be met with a firm slapping.
             </p>
+            <div class="happy-bees-row" id="happy-bees-row">
+                <label class="checkbox-container" id="happy-bees-label">
+                    <input type="checkbox" id="happy-bees-check">
+                    <span class="checkmark">
+                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="checkbox-label">🐝 Make Bees Happy (they won't attack while tracking)</span>
+                </label>
+            </div>
         </div>
 
         <div class="deliveries">
@@ -865,7 +897,32 @@
         }
         requestAnimationFrame(tick);
 
-        // Hold-to-track logic
+        // ── Happy Bees checkbox ──────────────────────────────────
+        const happyRow   = document.getElementById('happy-bees-row');
+        const happyCheck = document.getElementById('happy-bees-check');
+
+        // Restore saved state
+        if (localStorage.getItem('mia-happy-bees') === 'true') happyCheck.checked = true;
+        if (localStorage.getItem('mia-hold-attempted') === 'true') happyRow.classList.add('revealed');
+
+        happyCheck.addEventListener('change', () => {
+            localStorage.setItem('mia-happy-bees', happyCheck.checked);
+        });
+
+        // ── Bee buzz (hosted file) ────────────────────────────────
+        const buzzAudio = new Audio('./audio/bzzz.mp3');
+        buzzAudio.loop = true;
+        buzzAudio.volume = 0.5;
+
+        function startBuzz() {
+            try { buzzAudio.currentTime = 0; buzzAudio.play(); } catch(e) {}
+        }
+
+        function stopBuzz() {
+            try { buzzAudio.pause(); buzzAudio.currentTime = 0; } catch(e) {}
+        }
+
+        // ── Hold-to-track logic ───────────────────────────────────
         const holdBtn = document.getElementById('hold-track-btn');
         const holdProgress = document.getElementById('hold-progress');
         const HOLD_DURATION = 5000;
@@ -873,11 +930,18 @@
         let holdRAF = null;
         let didNavigate = false;
 
+        function revealHappyRow() {
+            localStorage.setItem('mia-hold-attempted', 'true');
+            happyRow.classList.add('revealed');
+        }
+
         function startHold(e) {
             e.preventDefault();
+            revealHappyRow();
             didNavigate = false;
             holdStart = performance.now();
-            beesDiving = true;
+            if (!happyCheck.checked) beesDiving = true;
+            startBuzz();
             animateProgress();
         }
 
@@ -899,6 +963,7 @@
             cancelAnimationFrame(holdRAF);
             holdStart = null;
             holdProgress.style.width = '0%';
+            stopBuzz();
         }
 
         holdBtn.addEventListener('mousedown', startHold);
