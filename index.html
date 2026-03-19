@@ -691,14 +691,14 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <div class="track-btn hold-btn" id="hold-track-btn" data-url="https://gdexpress.com/tracking/?consignmentno=MY37330879612">
-                        <span>Hold to Track</span>
+                    <a href="https://gdexpress.com/tracking/?consignmentno=MY37330879612" target="_blank" class="track-btn" id="hold-track-btn" data-url="https://gdexpress.com/tracking/?consignmentno=MY37330879612">
+                        <span>Track</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                             <polyline points="15 3 21 3 21 9"></polyline>
                             <line x1="10" y1="14" x2="21" y2="3"></line>
                         </svg>
-                    </div>
+                    </a>
                     <label class="checkbox-container">
                         <input type="checkbox" id="check-9" onchange="saveCheck(9)">
                         <span class="checkmark">
@@ -975,12 +975,12 @@
             stopBuzz();
         }
 
-        holdBtn.addEventListener('mousedown', startHold);
-        holdBtn.addEventListener('touchstart', startHold, { passive: false });
-        holdBtn.addEventListener('mouseup', endHold);
-        holdBtn.addEventListener('mouseleave', endHold);
-        holdBtn.addEventListener('touchend', endHold);
-        holdBtn.addEventListener('touchcancel', endHold);
+        // holdBtn.addEventListener('mousedown', startHold);
+        // holdBtn.addEventListener('touchstart', startHold, { passive: false });
+        // holdBtn.addEventListener('mouseup', endHold);
+        // holdBtn.addEventListener('mouseleave', endHold);
+        // holdBtn.addEventListener('touchend', endHold);
+        // holdBtn.addEventListener('touchcancel', endHold);
     </script>
 </body>
 </html>
