@@ -118,6 +118,15 @@
         }
 
 
+
+        #card-10 {
+            border-color: #C9950A;
+            box-shadow: 0 0 0 2px rgba(201, 149, 10, 0.25), 0 0 12px rgba(201, 149, 10, 0.1);
+        }
+        #card-10:hover {
+            border-color: #f0c040;
+            box-shadow: 0 0 0 2px rgba(240, 192, 64, 0.35), 0 0 16px rgba(240, 192, 64, 0.15);
+        }
         #card-8 {
             border-color: #C9950A;
             box-shadow: 0 0 0 1px rgba(201, 149, 10, 0.2);
@@ -643,7 +652,7 @@
                             <div class="delivery-title">
                                 <div>
                                     <span class="delivery-name">Delivery 8</span>
-                                    <div class="delivery-subtitle gold">The Queen Package</div>
+                                    <div class="delivery-subtitle gold">The Queen Package (Dior)</div>
                                 </div>
                             </div>
                             <span class="courier-badge">Ninja Van</span>
@@ -682,7 +691,7 @@
                             <div class="delivery-title">
                                 <div>
                                     <span class="delivery-name">Delivery 9</span>
-                                    <div class="delivery-subtitle red">The Cool Biaatch Package</div>
+                                    <div class="delivery-subtitle red">The Cool Biaatch Package (Coach)</div>
                                 </div>
                             </div>
                             <span class="courier-badge">GDEX</span>
@@ -701,6 +710,44 @@
                     </a>
                     <label class="checkbox-container">
                         <input type="checkbox" id="check-9" onchange="saveCheck(9)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery 10 -->
+            <div class="delivery-card" id="card-10">
+                <div class="card-top">
+                    <div class="courier-logo nvan">NINJA<br>VAN</div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <div class="delivery-title">
+                                <div>
+                                    <span class="delivery-name">Bangle</span>
+                                    <div class="delivery-subtitle gold">💛 The Gold Bangle</div>
+                                </div>
+                            </div>
+                            <span class="courier-badge">Ninja Van</span>
+                        </div>
+                        <div class="tracking-number">NVMYHJSBG000018368</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://www.ninjavan.co/en-my/tracking?id=NVMYHJSBG000018368" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-10" onchange="saveCheck(10)">
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
