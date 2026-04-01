@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mia's Deliveries 🌙</title>
+    <title>Mia's Deliveries</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a1f0f 0%, #0f2d1a 50%, #0a1f0f 100%);
+            background: linear-gradient(135deg, #1a0a12 0%, #1e1018 50%, #1a0a12 100%);
             min-height: 100vh;
             padding: 24px 16px;
             color: #f0f0f0;
@@ -32,7 +32,7 @@
         h1 {
             font-size: 2rem;
             font-weight: 600;
-            background: linear-gradient(135deg, #f0c040 0%, #c8860a 50%, #f5d76e 100%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8c42 50%, #ff6b9d 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -41,43 +41,14 @@
 
         .subtitle {
             font-size: 0.9rem;
-            color: #6b8c6b;
+            color: #9a6a7a;
         }
 
 
-        .happy-bees-row {
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-height: 28px; /* always reserve space so layout doesn't jump */
-            visibility: hidden; /* hidden but still takes space */
-        }
-        .happy-bees-row.revealed {
-            visibility: visible;
-        }
-        .happy-bees-row .checkbox-container {
-            gap: 8px;
-        }
-        .happy-bees-row .checkbox-label {
-            font-size: 0.82rem;
-            color: #6b8c6b;
-        }
-        .happy-bees-row .checkmark {
-            width: 20px;
-            height: 20px;
-        }
 
-        .raya-banner {
-            text-align: center;
-            font-size: 1.4rem;
-            letter-spacing: 0.4rem;
-            margin-bottom: 16px;
-            opacity: 0.6;
-        }
         .disclaimer {
-            background: rgba(200, 160, 20, 0.08);
-            border: 1px solid rgba(200, 160, 20, 0.25);
+            background: rgba(255, 107, 157, 0.06);
+            border: 1px solid rgba(255, 140, 66, 0.2);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 24px;
@@ -90,12 +61,12 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
-            color: #d4a017;
+            color: #ff8c42;
             font-weight: 600;
         }
 
         .disclaimer-text {
-            color: #6b8c6b;
+            color: #9a6a7a;
         }
 
         .deliveries {
@@ -104,6 +75,67 @@
             gap: 16px;
         }
 
+
+
+        .section-container {
+            border-radius: 10px;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+        .section-container.is-collapsed {
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .section-container.is-collapsed .section-header {
+            padding: 12px 14px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 10px 4px;
+            margin-bottom: 4px;
+            user-select: none;
+        }
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #9a6a7a;
+        }
+        .section-title.on-the-way {
+            color: #ff8c42;
+        }
+        .section-chevron {
+            font-size: 0.7rem;
+            color: #9a6a7a;
+            transition: transform 0.25s ease;
+        }
+        .section-chevron.on-the-way {
+            color: #ff8c42;
+        }
+        .section-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            max-height: 5000px;
+            opacity: 1;
+        }
+        .section-body.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        .section-chevron.rotated {
+            transform: rotate(-90deg);
+        }
+        .section-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+            margin: 8px 0 4px;
+        }
         .delivery-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -114,18 +146,50 @@
 
         .delivery-card:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(200, 160, 20, 0.35);
+            border-color: rgba(255, 107, 157, 0.3);
         }
 
 
 
         #card-10 {
-            border-color: #C9950A;
-            box-shadow: 0 0 0 2px rgba(201, 149, 10, 0.25), 0 0 12px rgba(201, 149, 10, 0.1);
+            border-color: #f0c040;
+            border-width: 2px;
+            background: linear-gradient(135deg,
+                rgba(240, 192, 64, 0.20) 0%,
+                rgba(201, 149, 10, 0.10) 50%,
+                rgba(240, 192, 64, 0.20) 100%
+            );
+            box-shadow:
+                0 0 0 1px rgba(240, 192, 64, 0.60),
+                0 0 32px rgba(201, 149, 10, 0.30),
+                inset 0 1px 0 rgba(240, 192, 64, 0.30);
         }
         #card-10:hover {
-            border-color: #f0c040;
-            box-shadow: 0 0 0 2px rgba(240, 192, 64, 0.35), 0 0 16px rgba(240, 192, 64, 0.15);
+            border-color: #f5d76e;
+            background: linear-gradient(135deg,
+                rgba(240, 192, 64, 0.26) 0%,
+                rgba(201, 149, 10, 0.13) 50%,
+                rgba(240, 192, 64, 0.26) 100%
+            );
+            box-shadow:
+                0 0 0 1px rgba(240, 192, 64, 0.75),
+                0 0 40px rgba(201, 149, 10, 0.40),
+                inset 0 1px 0 rgba(240, 192, 64, 0.40);
+        }
+        #card-10 .delivery-name {
+            background: linear-gradient(135deg, #f5d76e 0%, #C9950A 50%, #f5d76e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        #card-10 .courier-badge {
+            background: rgba(201, 149, 10, 0.2);
+            color: #f0c040;
+            border: 1px solid rgba(201, 149, 10, 0.3);
+        }
+        #card-10 .tracking-number {
+            color: #8a6f2e;
         }
         #card-8 {
             border-color: #C9950A;
@@ -173,8 +237,8 @@
             z-index: 0;
         }
         .delivery-card.checked {
-            background: rgba(200, 160, 20, 0.05);
-            border-color: rgba(200, 160, 20, 0.35);
+            background: rgba(255, 107, 157, 0.04);
+            border-color: rgba(255, 107, 157, 0.3);
         }
 
         .card-top {
@@ -284,8 +348,8 @@
         }
 
         .courier-badge {
-            background: rgba(200, 160, 20, 0.15);
-            color: #d4a017;
+            background: rgba(255, 107, 157, 0.12);
+            color: #ff8c42;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -306,7 +370,7 @@
         }
 
         .track-btn {
-            background: linear-gradient(135deg, #2e7d4f 0%, #1b5e35 100%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #e8523a 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -323,7 +387,7 @@
 
         .track-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(46, 125, 79, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.35);
         }
 
         .checkbox-container {
@@ -341,7 +405,7 @@
         .checkmark {
             width: 24px;
             height: 24px;
-            border: 2px solid rgba(255, 107, 157, 0.4);
+            border: 2px solid rgba(255, 140, 66, 0.35);
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -350,8 +414,8 @@
         }
 
         .checkbox-container input:checked + .checkmark {
-            background: linear-gradient(135deg, #2e7d4f 0%, #1b5e35 100%);
-            border-color: #2e7d4f;
+            background: linear-gradient(135deg, #ff6b9d 0%, #e8523a 100%);
+            border-color: #ff6b9d;
         }
 
         .checkmark svg {
@@ -372,11 +436,11 @@
 
         .checkbox-label {
             font-size: 0.85rem;
-            color: #6b8c6b;
+            color: #9a6a7a;
         }
 
         .delivery-card.checked .checkbox-label {
-            color: #d4a017;
+            color: #ff8c42;
         }
 
         .delivery-card.checked .delivery-name {
@@ -388,11 +452,10 @@
 <body>
     <div class="container">
         <header>
-            <h1>🌙 Mia's Deliveries</h1>
-            <p class="subtitle">Eid Mubarak! ✨ Track your parcels</p>
+            <h1>Mia's Deliveries</h1>
+            <p class="subtitle">Track your parcels</p>
         </header>
 
-        <div class="raya-banner">🪔 ✨ 🌙 ✨ 🪔</div>
         <div class="disclaimer">
             <div class="disclaimer-header">
                 <span>⚠️</span>
@@ -401,18 +464,106 @@
             <p class="disclaimer-text">
                 This tool is exclusively for use by Mia (the biatch). For parcel tracking purposes only. Any unauthorized access by users other than the Biatch herself will be met with a firm slapping.
             </p>
-            <div class="happy-bees-row" id="happy-bees-row">
-                <label class="checkbox-container" id="happy-bees-label">
-                    <input type="checkbox" id="happy-bees-check">
-                    <span class="checkmark">
-                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span class="checkbox-label">🐝 Make Bees Happy</span>
-                </label>
-            </div>
+            <p style="margin-top:10px;font-size:0.78rem;color:#e05555;font-style:italic;line-height:1.5;">The bees are not here, and no one knows why. Everyone is worried: What are the bees planning now? Did the cherries leave too? Or did the bees kidnap them?</p>
         </div>
 
-        <div class="deliveries">
+        <div class="deliveries" id="deliveries-root">
+
+            <!-- ON THE WAY -->
+            <div class="section-header" onclick="toggleSection('ontheway')">
+                <span class="section-title on-the-way">🚚 On The Way</span>
+                <span class="section-chevron on-the-way" id="chevron-ontheway">▼</span>
+            </div>
+            <div class="section-body" id="section-ontheway">
+                <!-- cards injected by JS -->
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- RECEIVED -->
+            <div class="section-container" id="container-received">
+                <div class="section-header" onclick="toggleSection('received')">
+                    <span class="section-title">✅ Received</span>
+                    <span class="section-chevron" id="chevron-received">▼</span>
+                </div>
+            </div>
+            <div class="section-body collapsed" id="section-received">
+                <!-- cards injected by JS -->
+            </div>
+
+        </div>        </div>
+    </div>
+
+    <script>
+        // Move cards from hidden pool into DOM
+        function initCards() {
+            const pool = document.getElementById('card-pool');
+            const onWay = document.getElementById('section-ontheway');
+            const received = document.getElementById('section-received');
+
+            for (let i = 1; i <= 10; i++) {
+                const card = pool.querySelector(`#card-${i}`);
+                if (!card) continue;
+
+                const saved = localStorage.getItem(`mia-delivery-${i}`);
+                const checkbox = card.querySelector(`#check-${i}`);
+
+                // Determine checked state
+                let isChecked;
+                if (saved === 'false') {
+                    isChecked = false;
+                } else if (saved === 'true' || checkbox.checked) {
+                    isChecked = true;
+                } else {
+                    isChecked = false;
+                }
+
+                checkbox.checked = isChecked;
+                if (isChecked) {
+                    card.classList.add('checked');
+                    received.appendChild(card);
+                } else {
+                    card.classList.remove('checked');
+                    onWay.appendChild(card);
+                }
+            }
+        }
+
+        function saveCheck(id) {
+            const checkbox = document.getElementById(`check-${id}`);
+            const card = document.getElementById(`card-${id}`);
+            const onWay = document.getElementById('section-ontheway');
+            const received = document.getElementById('section-received');
+
+            localStorage.setItem(`mia-delivery-${id}`, checkbox.checked);
+
+            if (checkbox.checked) {
+                card.classList.add('checked');
+                received.appendChild(card);
+            } else {
+                card.classList.remove('checked');
+                onWay.appendChild(card);
+            }
+        }
+
+        function toggleSection(name) {
+            const body = document.getElementById(`section-${name}`);
+            const chevron = document.getElementById(`chevron-${name}`);
+            const container = document.getElementById(`container-${name}`);
+            body.classList.toggle('collapsed');
+            chevron.classList.toggle('rotated');
+            if (container) container.classList.toggle('is-collapsed');
+        }
+
+        // Collapse received chevron to match collapsed state on load
+        document.getElementById('chevron-received').classList.add('rotated');
+        document.getElementById('container-received').classList.add('is-collapsed');
+    </script>
+
+    <script>
+        // 🐝 Bee logic preserved for future update
+    </script>
+<div id="card-pool" style="display:none">
             <!-- Delivery 1 -->
             <div class="delivery-card" id="card-1">
                 <div class="card-top">
@@ -632,7 +783,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-7" onchange="saveCheck(7)">
+                        <input type="checkbox" id="check-7" onchange="saveCheck(7)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -670,7 +821,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-8" onchange="saveCheck(8)">
+                        <input type="checkbox" id="check-8" onchange="saveCheck(8)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -709,7 +860,7 @@
                         </svg>
                     </a>
                     <label class="checkbox-container">
-                        <input type="checkbox" id="check-9" onchange="saveCheck(9)">
+                        <input type="checkbox" id="check-9" onchange="saveCheck(9)" checked>
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -723,7 +874,7 @@
             <!-- Delivery 10 -->
             <div class="delivery-card" id="card-10">
                 <div class="card-top">
-                    <div class="courier-logo nvan">NINJA<br>VAN</div>
+                    <div class="courier-logo gdex">GDEX</div>
                     <div class="card-info">
                         <div class="card-header">
                             <div class="delivery-title">
@@ -734,11 +885,11 @@
                             </div>
                             <span class="courier-badge">Ninja Van</span>
                         </div>
-                        <div class="tracking-number">NVMYHJSBG000018369</div>
+                        <div class="tracking-number">MY37332985948</div>
                     </div>
                 </div>
                 <div class="card-actions">
-                    <a href="https://www.ninjavan.co/en-my/tracking?id=NVMYHJSBG000018369" target="_blank" class="track-btn">
+                    <a href="https://gdexpress.com/tracking/?consignmentno=MY37332985948" target="_blank" class="track-btn">
                         <span>Track</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -757,277 +908,7 @@
                     </label>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <script>
-        // Load saved checkbox states on page load
-        function loadChecks() {
-            for (let i = 1; i <= 10; i++) {
-                const checkbox = document.getElementById(`check-${i}`);
-                const card = document.getElementById(`card-${i}`);
-                if (checkbox && card) {
-                    const saved = localStorage.getItem(`mia-delivery-${i}`);
-                    if (saved === 'false') {
-                        // User explicitly unchecked before — respect that
-                        checkbox.checked = false;
-                        card.classList.remove('checked');
-                    } else if (saved === 'true' || checkbox.checked) {
-                        // Saved as true OR defaulted to checked in HTML
-                        checkbox.checked = true;
-                        card.classList.add('checked');
-                    }
-                }
-            }
-        }
-
-        // Save checkbox state
-        function saveCheck(id) {
-            const checkbox = document.getElementById(`check-${id}`);
-            const card = document.getElementById(`card-${id}`);
-            localStorage.setItem(`mia-delivery-${id}`, checkbox.checked);
-            if (checkbox.checked) {
-                card.classList.add('checked');
-            } else {
-                card.classList.remove('checked');
-            }
-        }
-
-        loadChecks();
-    </script>
-
-    <style>
-        .bee {
-            position: fixed;
-            font-size: 1.4rem;
-            pointer-events: none;
-            z-index: 9999;
-            will-change: left, top, transform;
-        }
-    </style>
-
-    <script>
-        // ── Global Speed Modifiers ──────────────────────────────
-        // Tune these to match feel across devices. 1.0 = default.
-        const GSModH = 3.0;    // Horizontal speed multiplier
-        const GSModV = 3.0;    // Vertical speed multiplier
-        const AngryMod = 2.0;  // Speed multiplier when bees chase the button
-        // ────────────────────────────────────────────────────────
-
-        function makeFloaters(emoji, count, speedMin, speedMax) {
-            const items = [];
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('div');
-                el.style.cssText = 'position:fixed;font-size:1.4rem;pointer-events:none;z-index:9999;will-change:left,top,transform;';
-                el.textContent = emoji;
-                document.body.appendChild(el);
-                const angle = Math.random() * Math.PI * 2;
-                const speed = speedMin + Math.random() * (speedMax - speedMin);
-                items.push({
-                    el,
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    wobble: Math.random() * Math.PI * 2,
-                    turnTimer: 0,
-                    turnAt: 50 + Math.floor(Math.random() * 100),
-                });
-            }
-            return items;
-        }
-
-        const bees    = makeFloaters('🐝', 4, 0.8, 1.5);
-        const cherries = makeFloaters('🍒', 4, 0.3, 0.7);
-        const all = [...bees, ...cherries];
-
-        let beesDiving = false;
-
-        // Delta-time: normalise to 60fps baseline so speed is device-independent
-        const TARGET_MS = 1000 / 60;
-        let lastTime = null;
-
-        function tick(now) {
-            const dt = lastTime ? Math.min((now - lastTime) / TARGET_MS, 3) : 1; // cap at 3x to avoid jumps after tab switch
-            lastTime = now;
-
-            const W = window.innerWidth;
-            const H = window.innerHeight;
-
-            // Get button rect fresh every frame
-            const btnElDiv = document.getElementById('hold-track-btn');
-            const btnRect = btnElDiv ? btnElDiv.getBoundingClientRect() : null;
-            const btnR = btnRect;
-            const PADDING = 22;
-
-            // Bees only — steer toward button when diving
-            for (const b of bees) {
-                b.wobble += 0.08 * dt;
-                if (beesDiving && btnRect) {
-                    const clampedX = Math.max(btnRect.left, Math.min(btnRect.right,  b.x));
-                    const clampedY = Math.max(btnRect.top,  Math.min(btnRect.bottom, b.y));
-                    const dx = clampedX - b.x;
-                    const dy = clampedY - b.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const speed = 1.2 * AngryMod;
-                    b.vx += (dx / dist * speed - b.vx) * 0.08 * dt;
-                    b.vy += (dy / dist * speed - b.vy) * 0.08 * dt;
-                } else {
-                    b.turnTimer += dt;
-                    if (b.turnTimer >= b.turnAt) {
-                        const targetAngle = Math.random() * Math.PI * 2;
-                        const speed = 1.0 + (Math.random() - 0.5) * 0.6;
-                        b.vx += (Math.cos(targetAngle) * speed - b.vx) * 0.3;
-                        b.vy += (Math.sin(targetAngle) * speed - b.vy) * 0.3;
-                        b.turnTimer = 0;
-                        b.turnAt = 50 + Math.floor(Math.random() * 100);
-                    }
-                    if (b.x < 20)     b.vx = Math.abs(b.vx);
-                    if (b.x > W - 30) b.vx = -Math.abs(b.vx);
-                    if (b.y < 20)     b.vy = Math.abs(b.vy);
-                    if (b.y > H - 30) b.vy = -Math.abs(b.vy);
-                }
-                b.x += b.vx * dt * GSModH;
-                b.y += b.vy * dt * GSModV + Math.sin(b.wobble) * 0.4 * dt * GSModV;
-
-                // Button collision — only active when holding
-                if (beesDiving && btnR) {
-                    const left   = btnR.left   - PADDING;
-                    const right  = btnR.right  + PADDING;
-                    const top    = btnR.top    - PADDING;
-                    const bottom = btnR.bottom + PADDING;
-
-                    const insideX = b.x > left && b.x < right;
-                    const insideY = b.y > top  && b.y < bottom;
-
-                    if (insideX && insideY) {
-                        const dLeft   = Math.abs(b.x - left);
-                        const dRight  = Math.abs(b.x - right);
-                        const dTop    = Math.abs(b.y - top);
-                        const dBottom = Math.abs(b.y - bottom);
-                        const minD = Math.min(dLeft, dRight, dTop, dBottom);
-
-                        const bounceSpeed = 3.0;
-                        let baseAngle;
-                        if (minD === dLeft)        { b.x = left   - 20; baseAngle = Math.PI; }
-                        else if (minD === dRight)  { b.x = right  + 20; baseAngle = 0; }
-                        else if (minD === dTop)    { b.y = top    - 20; baseAngle = -Math.PI / 2; }
-                        else                       { b.y = bottom + 20; baseAngle =  Math.PI / 2; }
-                        const spread = (Math.random() - 0.5) * (Math.PI * 5 / 9);
-                        const finalAngle = baseAngle + spread;
-                        b.vx = Math.cos(finalAngle) * bounceSpeed;
-                        b.vy = Math.sin(finalAngle) * bounceSpeed;
-                        if (holdStart !== null) holdStart += 100;
-                    }
-                }
-
-                b.el.style.left = b.x + 'px';
-                b.el.style.top  = b.y + 'px';
-                b.el.style.transform = b.vx < 0 ? 'scaleX(-1)' : 'scaleX(1)';
-            }
-
-            // Cherries — always normal, never affected
-            for (const c of cherries) {
-                c.wobble += 0.08 * dt;
-                c.turnTimer += dt;
-                if (c.turnTimer >= c.turnAt) {
-                    const targetAngle = Math.random() * Math.PI * 2;
-                    const speed = 0.5 + (Math.random() - 0.5) * 0.3;
-                    c.vx += (Math.cos(targetAngle) * speed - c.vx) * 0.3;
-                    c.vy += (Math.sin(targetAngle) * speed - c.vy) * 0.3;
-                    c.turnTimer = 0;
-                    c.turnAt = 50 + Math.floor(Math.random() * 100);
-                }
-                if (c.x < 20)     c.vx = Math.abs(c.vx);
-                if (c.x > W - 30) c.vx = -Math.abs(c.vx);
-                if (c.y < 20)     c.vy = Math.abs(c.vy);
-                if (c.y > H - 30) c.vy = -Math.abs(c.vy);
-                c.x += c.vx * dt * GSModH;
-                c.y += c.vy * dt * GSModV + Math.sin(c.wobble) * 0.4 * dt * GSModV;
-                c.el.style.left = c.x + 'px';
-                c.el.style.top  = c.y + 'px';
-                c.el.style.transform = c.vx < 0 ? 'scaleX(-1)' : 'scaleX(1)';
-            }
-
-            requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-
-        // ── Happy Bees checkbox ──────────────────────────────────
-        const happyRow   = document.getElementById('happy-bees-row');
-        const happyCheck = document.getElementById('happy-bees-check');
-
-        // Restore saved state
-        if (localStorage.getItem('mia-happy-bees') === 'true') happyCheck.checked = true;
-        if (localStorage.getItem('mia-hold-attempted') === 'true') happyRow.classList.add('revealed');
-
-        happyCheck.addEventListener('change', () => {
-            localStorage.setItem('mia-happy-bees', happyCheck.checked);
-        });
-
-        // ── Bee buzz (hosted file) ────────────────────────────────
-        const buzzAudio = new Audio('./audio/bzzz.mp3');
-        buzzAudio.loop = true;
-        buzzAudio.volume = 0.5;
-
-        function startBuzz() {
-            try { buzzAudio.currentTime = 0; buzzAudio.play(); } catch(e) {}
-        }
-
-        function stopBuzz() {
-            try { buzzAudio.pause(); buzzAudio.currentTime = 0; } catch(e) {}
-        }
-
-        // ── Hold-to-track logic ───────────────────────────────────
-        const holdBtn = document.getElementById('hold-track-btn');
-        const holdProgress = document.getElementById('hold-progress');
-        const HOLD_DURATION = 5000;
-        let holdStart = null;
-        let holdRAF = null;
-        let didNavigate = false;
-
-        function revealHappyRow() {
-            localStorage.setItem('mia-hold-attempted', 'true');
-            happyRow.classList.add('revealed');
-        }
-
-        function startHold(e) {
-            e.preventDefault();
-            revealHappyRow();
-            didNavigate = false;
-            holdStart = performance.now();
-            if (!happyCheck.checked) beesDiving = true;
-            if (!happyCheck.checked) startBuzz();
-            animateProgress();
-        }
-
-        function animateProgress() {
-            const elapsed = performance.now() - holdStart;
-            const pct = Math.min((elapsed / HOLD_DURATION) * 100, 100);
-            holdProgress.style.width = pct + '%';
-            if (pct >= 100 && !didNavigate) {
-                didNavigate = true;
-                endHold();
-                window.open(holdBtn.dataset.url, '_blank');
-            } else if (pct < 100) {
-                holdRAF = requestAnimationFrame(animateProgress);
-            }
-        }
-
-        function endHold() {
-            beesDiving = false;
-            cancelAnimationFrame(holdRAF);
-            holdStart = null;
-            holdProgress.style.width = '0%';
-            stopBuzz();
-        }
-
-        // holdBtn.addEventListener('mousedown', startHold);
-        // holdBtn.addEventListener('touchstart', startHold, { passive: false });
-        // holdBtn.addEventListener('mouseup', endHold);
-        // holdBtn.addEventListener('mouseleave', endHold);
-        // holdBtn.addEventListener('touchend', endHold);
-        // holdBtn.addEventListener('touchcancel', endHold);
-    </script>
+</div>
+<script>initCards();</script>
 </body>
 </html>
