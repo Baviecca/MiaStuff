@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #1a1814 0%, #141210 40%, #1c1a17 100%);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Scrollbar hidden */
+  body::-webkit-scrollbar { width: 0; }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+    animation: grain 8s steps(2) infinite;
+  }
+
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(8,6,4,0.7) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes grain {
+    0%,100% { transform: translate(0,0); }
+    10%  { transform: translate(-1%,-1%); }
+    30%  { transform: translate(1%,1%); }
+    50%  { transform: translate(-1%,1%); }
+    70%  { transform: translate(1%,-1%); }
+    90%  { transform: translate(-1%,0); }
+  }
+
+  /* Firefly canvas */
+  #fireflies {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Main content */
+  .page {
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 72px 34px 96px;
+  }
+
+  /* Dedication */
+  .dedication {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(0.92rem, 3.8vw, 1.05rem);
+    color: #c4a06a;
+    letter-spacing: 0.08em;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 2s ease 0.3s forwards;
+  }
+
+  /* Stanza */
+  .stanza {
+    margin-bottom: 2.8rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  .stanza.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stanza line-text,
+  .stanza .line {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 4.3vw, 1.22rem);
+    line-height: 1.9;
+    color: #e8d5a3;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+  /* Divider */
+  .divider {
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    color: #d4a853;
+    font-size: 1rem;
+    letter-spacing: 0.7em;
+    padding-left: 0.7em;
+  }
+  .divider.visible { opacity: 0.18; }
+
+  /* Heart */
+  .heart-wrap {
+    margin-top: 52px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s ease;
+  }
+  .heart-wrap.visible { opacity: 1; }
+
+  .heart-wrap svg {
+    animation: pulseHeart 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(196,130,58,0.45));
+  }
+
+  @keyframes pulseHeart {
+    0%,100% { transform: scale(1); opacity: 0.72; }
+    50%      { transform: scale(1.2); opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="fireflies"></canvas>
+
+<div class="page">
+
+  <div class="dedication">For you.</div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">I know you're tired, I know you're worn</span>
+    <span class="line">carrying weight since the day you were born</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">walked through heat holding little brother's hand</span>
+    <span class="line">a little girl trying to be a man</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">no one saw you, no one came</span>
+    <span class="line">but you built a life and you lit your flame</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">ran when you were just a teen, scared and alone</span>
+    <span class="line">turned a stranger's city into your own</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">and then came me, some stupid kid</span>
+    <span class="line">who loved you more than he ever did</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">I fumbled, I failed, I lost my way</span>
+    <span class="line">but I never left, not for a single day</span>
+  </div>
+
+  <div class="divider" data-stanza>· · ·</div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">you say you're empty, you say you're done</span>
+    <span class="line">that you've got nothing and you've already run</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">but I see a woman with a heart of gold</span>
+    <span class="line">too damn stubborn and too damn bold</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">so here I am, not perfect, not clean</span>
+    <span class="line">still the same guy from two thousand sixteen</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">but I caught my old self standing and locking a stare</span>
+    <span class="line">judging me for every crack I couldn't repair</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">so I told him — sorry, I know what I did</span>
+    <span class="line">I'm fixing it now, I'm not that kid</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">now I'm standing on solid ground</span>
+    <span class="line">and I'm not leaving till you come around</span>
+  </div>
+
+  <div class="divider" data-stanza>· · ·</div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">snore like a hamster, fart in your sleep</span>
+    <span class="line">be difficult, stubborn — you're mine to keep</span>
+  </div>
+
+  <div class="stanza" data-stanza>
+    <span class="line">because I chose you then and I choose you still</span>
+    <span class="line">and if you think I'm done — girl, I never will</span>
+  </div>
+
+  <div class="heart-wrap" data-stanza>
+    <svg width="30" height="28" viewBox="0 0 30 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 26C15 26 2 17.5 2 9C2 5.41 4.91 2.5 8.5 2.5C10.8 2.5 12.84 3.72 15 5.8C17.16 3.72 19.2 2.5 21.5 2.5C25.09 2.5 28 5.41 28 9C28 17.5 15 26 15 26Z" fill="#c4823a" opacity="0.88"/>
+    </svg>
+  </div>
+
+</div>
+
+<script>
+  // ── Firefly canvas ──────────────────────────────────────────────
+  (function () {
+    const canvas = document.getElementById('fireflies');
+    const ctx = canvas.getContext('2d');
+    const colors = ['#d4a853','#e8c87a','#c8956a','#f0d9a0','#b8834a'];
+    let W, H, particles;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function makeParticle() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: 0.8 + Math.random() * 1.6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0,
+        alphaDir: (Math.random() > 0.5 ? 1 : -1),
+        alphaSpeed: 0.003 + Math.random() * 0.005,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: -0.08 - Math.random() * 0.14,
+        maxAlpha: 0.35 + Math.random() * 0.4,
+      };
+    }
+
+    function init() {
+      resize();
+      particles = Array.from({ length: 32 }, makeParticle);
+      // stagger starting alphas
+      particles.forEach(p => { p.alpha = Math.random() * p.maxAlpha; });
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.alpha += p.alphaSpeed * p.alphaDir;
+        if (p.alpha >= p.maxAlpha) { p.alpha = p.maxAlpha; p.alphaDir = -1; }
+        if (p.alpha <= 0)          { p.alpha = 0;          p.alphaDir =  1; }
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // wrap
+        if (p.y < -10) p.y = H + 10;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W+10) p.x = -10;
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 4;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    tick();
+  })();
+
+  // ── Scroll reveal ───────────────────────────────────────────────
+  (function () {
+    const items = document.querySelectorAll('[data-stanza]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    items.forEach(el => observer.observe(el));
+  })();
+</script>
+
+</body>
+</html>
