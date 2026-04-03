@@ -471,7 +471,7 @@
             <p class="disclaimer-text">
                 This tool is exclusively for use by Mia (the biatch). For parcel tracking purposes only. Any unauthorized access by users other than the Biatch herself will be met with a firm slapping.
             </p>
-            <p style="margin-top:10px;font-size:0.78rem;color:#e05555;font-style:italic;line-height:1.5;">The bees are not here, and no one knows why. Everyone is worried: What are the bees planning now? Did the cherries leave too? Or did the bees kidnap them?</p>
+            <p style="margin-top:10px;font-size:0.78rem;color:#e05555;font-style:italic;line-height:1.5;">URGENT: Someone has spotted bee spies across the land. It seems they really are planning something. We are just not sure what. If you look carefully, you might see some of the bee spies.</p>
         </div>
 
         <div class="deliveries" id="deliveries-root">
@@ -923,6 +923,7 @@
                         <div class="card-header">
                             <div class="delivery-title">
                                 <span class="delivery-name">Parents Eid Gift</span>
+                                    <div class="delivery-subtitle red">✈️ Jeddah to Marudu</div>
                             </div>
                             <span class="courier-badge">DHL Express</span>
                         </div>
@@ -951,5 +952,69 @@
             </div>
 </div>
 <script>initCards();</script>
+
+    <style>
+        .bee-spy {
+            position: fixed;
+            font-size: 1.6rem;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 2s ease-in-out;
+        }
+    </style>
+
+    <script>
+        (function() {
+            function spawnBeeSpy() {
+                const side = Math.random() < 0.5 ? 'left' : 'right';
+                const bee = document.createElement('div');
+                bee.className = 'bee-spy';
+                bee.textContent = '🐝';
+
+                // Random vertical position
+                const yPct = 10 + Math.random() * 80;
+                bee.style.top = yPct + 'vh';
+
+                // Start fully off screen
+                if (side === 'left') {
+                    bee.style.left = '0px';
+                    bee.style.transform = 'translateX(-100%)';
+                } else {
+                    bee.style.right = '0px';
+                    bee.style.transform = 'translateX(100%)';
+                }
+
+                document.body.appendChild(bee);
+
+                // Slide in 70% after a tick
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        if (side === 'left') {
+                            bee.style.transform = 'translateX(-30%)';
+                        } else {
+                            bee.style.transform = 'translateX(30%)';
+                        }
+                    });
+                });
+
+                // After 2s in, slide back out
+                setTimeout(() => {
+                    if (side === 'left') {
+                        bee.style.transform = 'translateX(-100%)';
+                    } else {
+                        bee.style.transform = 'translateX(100%)';
+                    }
+                    // Remove from DOM after transition
+                    setTimeout(() => bee.remove(), 2100);
+                }, 2000 + 2000); // 2s transition in + 2s stay
+
+                // Schedule next spy (every 4 seconds from now)
+                setTimeout(spawnBeeSpy, 4000);
+            }
+
+            // First spy appears after 4 seconds
+            setTimeout(spawnBeeSpy, 4000);
+        })();
+    </script>
 </body>
 </html>
