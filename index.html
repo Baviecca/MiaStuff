@@ -979,7 +979,7 @@
                 // Start fully off screen
                 if (side === 'left') {
                     bee.style.left = '0px';
-                    bee.style.transform = 'translateX(-100%)';
+                    bee.style.transform = 'translateX(-100%) scaleX(-1)';
                 } else {
                     bee.style.right = '0px';
                     bee.style.transform = 'translateX(100%)';
@@ -991,7 +991,7 @@
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         if (side === 'left') {
-                            bee.style.transform = 'translateX(-30%)';
+                            bee.style.transform = 'translateX(-30%) scaleX(-1)';
                         } else {
                             bee.style.transform = 'translateX(30%)';
                         }
@@ -1001,7 +1001,7 @@
                 // After 2s in, slide back out
                 setTimeout(() => {
                     if (side === 'left') {
-                        bee.style.transform = 'translateX(-100%)';
+                        bee.style.transform = 'translateX(-100%) scaleX(-1)';
                     } else {
                         bee.style.transform = 'translateX(100%)';
                     }
@@ -1017,6 +1017,5 @@
             setTimeout(spawnBeeSpy, 4000);
         })();
     </script>
-<script data-goatcounter="https://baviecca.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
