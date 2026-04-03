@@ -282,6 +282,13 @@
             color: white;
         }
 
+        .courier-logo.dhl {
+            background: linear-gradient(135deg, #FFCC00 0%, #F5B800 100%);
+            color: #D40511;
+            font-weight: 900;
+            font-size: 0.75rem;
+        }
+
         .courier-logo.unknown {
             background: linear-gradient(135deg, #555 0%, #333 100%);
             color: #999;
@@ -501,7 +508,7 @@
             const onWay = document.getElementById('section-ontheway');
             const received = document.getElementById('section-received');
 
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 11; i++) {
                 const card = pool.querySelector(`#card-${i}`);
                 if (!card) continue;
 
@@ -899,6 +906,40 @@
                     </a>
                     <label class="checkbox-container">
                         <input type="checkbox" id="check-10" onchange="saveCheck(10)">
+                        <span class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Received</span>
+                    </label>
+                </div>
+            </div>
+            <!-- Delivery 11 -->
+            <div class="delivery-card" id="card-11">
+                <div class="card-top">
+                    <div class="courier-logo dhl">DHL</div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <div class="delivery-title">
+                                <span class="delivery-name">Parents Eid Gift</span>
+                            </div>
+                            <span class="courier-badge">DHL Express</span>
+                        </div>
+                        <div class="tracking-number">4888494251</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="https://www.dhl.com/my-en/home/tracking/tracking-express.html?submit=1&tracking-id=4888494251" target="_blank" class="track-btn">
+                        <span>Track</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-11" onchange="saveCheck(11)">
                         <span class="checkmark">
                             <svg viewBox="0 0 24 24">
                                 <polyline points="20 6 9 17 4 12"></polyline>
